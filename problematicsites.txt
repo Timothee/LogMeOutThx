@@ -1,0 +1,26 @@
+Websites with issues:
+
+southwest.com				because their logout link text is "MySouthwest logout"
+frontierairlines.com		because their logout link text is "> Signout"
+atlassian.com				logout text is "Log Out (Timothée Boucher)"
+walgreens.com				because using an image without alt text
+
+commandlinefu.com 			because there are "logout" tags, thus multiple targets
+
+amazon.fr					the text is not found
+netflix.com					text is not recognized for some reason
+
+anyvite.com					function isTextAMatch fails on some multi-line text…
+capitalone.com				toLowerCase error
+
+Ning						because Sign out link uses some JS…
+revision3.com				error with toLowerCase on some text…
+projectpier.org				error with onclick
+transunion.com				mix with onclick
+hotmail.com					elt has onclick but onclick() fails
+redfin.com					onclick does not do anything
+lulu.com					onclick does nothing while href would work
+
+movietickets.com			not sure why…
+mozilla.com					???
+expedia.com					???
