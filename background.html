@@ -1,34 +1,25 @@
 <html>
 <script>
 
-
+// For message passing
 chrome.extension.onRequest.addListener(
-  function(request, sender, sendResponse) {
-	
-		// TODO use keyIdentifier with unescape to get a character that maps pretty much to the key
-		// TODO switch option retrieving to background.html and have content_script AND
-		// options.html call it through chrome.extension.sendRequest
-		// TODO if the OS is Mac, show characters for Ctrl, Shift...
-		
+  function(request, sender, sendResponse) {		
     if (request.command == "restoreOptions") {
       myCtrl 		= localStorage["ctrl"];
     	myAlt 		= localStorage["alt"];
     	myShift   = localStorage["shift"];
-    	myMeta 	  = localStorage["meta"];
-    	myKeyCode	= localStorage['keyCode'];
+			myKeyIdentifier = localStorage['keyIdentifier'];
 
     	// defines default shortcut Alt+Shift+1
-    	myCtrl 		= (typeof myCtrl == "undefined"   ? false:myCtrl);
-    	myAlt			= (typeof myAlt == "undefined"    ? false:myAlt);
-    	myShift 	= (typeof myShift == "undefined"  ? false:myShift);
-    	myMeta 		= (typeof myMeta == "undefined"   ? false:myMeta);
-    	myKeyCode = (typeof myKeyCode == "undefined"? "8260":myKeyCode);
+    	myCtrl 		= (typeof myCtrl == "undefined"   ? "false":myCtrl);
+    	myAlt			= (typeof myAlt == "undefined"    ? "true":myAlt);
+    	myShift 	= (typeof myShift == "undefined"  ? "true":myShift);
+			myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+0021":myKeyIdentifier);
     	
       sendResponse({ctrl: myCtrl,
                     alt: myAlt,
                     shift: myShift,
-                    meta: myMeta,
-                    keyCode: myKeyCode});
+										keyIdentifier: myKeyIdentifier});
     } else {
       sendResponse({});
     }

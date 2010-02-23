@@ -1,7 +1,7 @@
 {
   "name": "LogMeOut",
-  "version": "0.1",
-  "description": "Adds keyboard shortcut to LogMeOut http://logmeoutthx.com Pressing Alt+Shift+1 will log you out (see options to change the shortcut)",
+  "version": "0.2",
+  "description": "Adds keyboard shortcut to use LogMeOut http://logmeoutthx.com Pressing Alt+Shift+1 will log you out (see options to change the shortcut)",
   "background_page": "background.html",
   "options_page": "options.html",
   "content_scripts": [

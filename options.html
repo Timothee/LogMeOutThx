@@ -3,42 +3,37 @@
 <link rel="stylesheet" href="http://logmeoutthx.com/style.css" type="text/css"/>
 <script type="text/javascript">
 
-var ctrl, alt, shift, meta, keyCode;
+var ctrl, alt, shift, keyIdentifier;
 
-// Restores shortcut value from localStorage
-function restoreOptions() {
-	ctrl 		= localStorage["ctrl"];
-	alt 		= localStorage["alt"];
-	shift   = localStorage["shift"];
-	meta 	  = localStorage["meta"];
-	keyCode	= localStorage['keyCode'];
-	
-	// defines default shortcut Alt+Shift+1
-	ctrl 		= (typeof ctrl == "undefined"   ? false:ctrl);
-	alt			= (typeof alt == "undefined"    ? true:alt);
-	shift 	= (typeof shift == "undefined"  ? true:shift);
-	meta 		= (typeof meta == "undefined"   ? false:meta);
-	keyCode = (typeof keyCode == "undefined"? "49":keyCode);
-}
+// Retrieves KB shortcut setting
+chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+function restoreOptions(response) {
+  ctrl    = response.ctrl;
+  alt     = response.alt;
+  shift   = response.shift;
+  keyIdentifier = response.keyIdentifier;
+	updateShortcutField();
+};
 
-// Saves options to localStorage.
-function saveOptions() {
-	if (keyCode == '') {
-		return false;
-	} else {
-	  localStorage['ctrl']   	= ctrl;
-	  localStorage['alt']     = alt;
-	  localStorage['shift']   = shift;
-	  localStorage['meta']   	= meta;
-	  localStorage['keyCode']	= keyCode;
-		return true;
+// Update textfield with saved or current shortcut
+function updateShortcutField () {
+	var shortcut = "";
+	var mac = /Macintosh/i.test(navigator.userAgent);
+	if (ctrl == "true")		shortcut += (mac?"\u2303":"Ctrl+");
+	if (alt == "true")		shortcut += (mac?"\u2325":"Alt+");
+	if (shift == "true")	shortcut += (mac?"\u21e7":"Shift+");
+	shortcut += fromKeyIdentifier(keyIdentifier);
+	// Shortcut needs at least one modifier key
+	if (!(ctrl || alt || shift) || shortcut == "") {
+	  shortcut = "Type shortcut";
 	}
+	document.getElementById('shortcut').value = shortcut;
 }
 
+// Resets KB (without saving) and starts listening to keystrokes
 function startEditing() {
-  ctrl = alt = shift = meta = false;
-  keyCode = '';
-  // document.getElementById('shortcut').disabled = "true";
+  ctrl = alt = shift = false;
+  keyIdentifier = '';
   document.body.addEventListener('keydown', modifierKeys, true);
   document.body.addEventListener('keyup', modifierKeys, true);
   document.body.addEventListener('keypress', mainKey, true);
@@ -46,8 +41,10 @@ function startEditing() {
   updateShortcutField();
 }
 
+// Used for live updating before a "real" key is pressed
 function modifierKeys (event) {
   if (event) {
+    // Cancels if Esc is pressed
     if (event.keyCode == "27") {
       cancelEditing();
       return;
@@ -55,46 +52,67 @@ function modifierKeys (event) {
     ctrl = event.ctrlKey + "";
     alt = event.altKey + "";
     shift = event.shiftKey + "";
-    meta = event.metaKey + "";
   }
   updateShortcutField();
 }
 
+// Grabs the shortcut and saves it
 function mainKey (event) {
 	if (event) {
-		if (ctrl == "true" || alt == "true" || shift == "true" || meta == "true") {
-			keyCode = event.keyCode;
+		if (ctrl == "true" || alt == "true" || shift == "true") {
+			keyIdentifier = event.keyIdentifier;
+			resetField();
 			saveOptions();
 			updateShortcutField();
 		} else {
-			keyCode = '';
+			keyIdentifier = '';
 		}
 	}
 }
 
-function cancelEditing (argument) {
-  // delete document.getElementById('shortcut').disabled;
-  restoreOptions();
+// Stops listeners
+function resetField () {
+  document.body.removeEventListener('keydown', modifierKeys, true);
+  document.body.removeEventListener('keyup', modifierKeys, true);
+  document.body.removeEventListener('keypress', mainKey, true);
+	document.getElementById('shortcut').style.color = "#000";
 }
 
-// Update textfield with saved or current shortcut
-function updateShortcutField () {
-	var shortcut = "";
-	if (ctrl == "true")		shortcut += "Ctrl+";
-	if (alt == "true")		shortcut += "Alt+";
-	if (shift == "true")	shortcut += "Shift+";
-	if (meta == "true")		shortcut += "Meta+";
-	shortcut += String.fromCharCode(keyCode);
-	if (!(ctrl || alt || shift || meta)) {
-	  shortcut = "Type shortcut";
+// Called when Esc is pressed
+function cancelEditing (argument) {
+	resetField();
+	chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+}
+
+// Saves options to localStorage.
+function saveOptions() {
+	if (keyIdentifier == '') {
+		return false;
+	} else {
+	  localStorage['ctrl']   	= ctrl;
+	  localStorage['alt']     = alt;
+	  localStorage['shift']   = shift;
+		localStorage['keyIdentifier'] = keyIdentifier;
+		return true;
 	}
-	document.getElementById('shortcut').value = shortcut;
+}
+
+// Transforms keyIdentifier value into Unicode character
+function fromKeyIdentifier (keyId) {
+  if (res = /[0-9A-E]{2}\b/.exec(keyId)) {
+   return unescape("%"+res[0]);
+   // TODO try to use \uXXXX instead of unescape, so that any language should work
+  // if (res = /U\+([0-9A-E]{4})\b/.exec(keyId)) {
+    // return String('\\u'+res[1]);
+	} else {
+		return "";
+	}
 }
 
 </script>
 </head>
 
-<body onload="restoreOptions();updateShortcutField();">
+<body onload="updateShortcutField();">
 <div id="header">
 	<h1>LogMeOut</h1>
 </div>

@@ -1,25 +1,34 @@
-var ctrl, alt, shift, meta, keyCode;
+// Script that will be embedded in all pages
+// - retrieves keyboard shortcut from options
+// - inserts LogMeOut script whenever KB shortcut is called
+// The logout part is handled by the remote script on logmeoutthx.com
+// (c) 2010 Timothée Boucher timotheeboucher.com
 
-chrome.extension.sendRequest({command: "restoreOptions"}, handleResponse);
+var ctrl, alt, shift, keyIdentifier;
 
-function handleResponse(response) {
-  console.log(response);
-  ctrl = response.ctrl=="true";
-  alt = response.alt=="true";
-  shift = response.shift=="true";
-  meta = response.meta=="true";
-  keyCode = response.keyCode;
-  console.log('CALLBACK Ctrl: '+ctrl+" Alt: "+alt+" Shift: "+shift+" Meta: "+meta+" keyCode: "+keyCode);
+// Retrieves KB shortcut setting
+chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+function restoreOptions(response) {
+  ctrl    = response.ctrl;
+  alt     = response.alt;
+  shift   = response.shift;
+  keyIdentifier = response.keyIdentifier;
 };
 
-setTimeout(function(){console.log('Ctrl: '+ctrl+" Alt: "+alt+" Shift: "+shift+" Meta: "+meta+" keyCode: "+keyCode);}, 1000);
-
+// Listens to keypress and adds script if it matches setting
 document.body.addEventListener('keypress', launchLogMeOut, true);
-
 function launchLogMeOut (event) {
-  // console.log('Ctrl: '+ctrl+" Alt: "+alt+" Shift: "+shift+" Meta: "+meta+" keyCode: "+keyCode);
-  console.log(event.keyCode + " " + event.charCode + " " + event.which + " " + event.keyIdentifier);
-  if (event.ctrlKey == ctrl && event.altKey == alt && event.shiftKey == shift && event.metaKey == meta && event.keyCode == keyCode) {
-    alert('let\'s dance');
+  if (event.ctrlKey+"" == ctrl &&
+      event.altKey+"" == alt &&
+      event.shiftKey+"" == shift &&
+      event.keyIdentifier == keyIdentifier) {
+    var logMeOut;
+    if (logMeOut!=undefined) {
+      logMeOut.start();
+    } else {
+      var script=document.createElement('script');
+      script.src='http://logmeoutthx.com/logmeout.js';
+      document.getElementsByTagName('head')[0].appendChild(script);
+    }
   }
 }
