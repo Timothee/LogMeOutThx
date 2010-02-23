@@ -1,0 +1,116 @@
+<html>
+<head><title>LogMeOut Options</title>
+<link rel="stylesheet" href="http://logmeoutthx.com/style.css" type="text/css"/>
+<script type="text/javascript">
+
+var ctrl, alt, shift, meta, keyCode;
+
+// Restores shortcut value from localStorage
+function restoreOptions() {
+	ctrl 		= localStorage["ctrl"];
+	alt 		= localStorage["alt"];
+	shift   = localStorage["shift"];
+	meta 	  = localStorage["meta"];
+	keyCode	= localStorage['keyCode'];
+	
+	// defines default shortcut Alt+Shift+1
+	ctrl 		= (typeof ctrl == "undefined"   ? false:ctrl);
+	alt			= (typeof alt == "undefined"    ? true:alt);
+	shift 	= (typeof shift == "undefined"  ? true:shift);
+	meta 		= (typeof meta == "undefined"   ? false:meta);
+	keyCode = (typeof keyCode == "undefined"? "49":keyCode);
+}
+
+// Saves options to localStorage.
+function saveOptions() {
+	if (keyCode == '') {
+		return false;
+	} else {
+	  localStorage['ctrl']   	= ctrl;
+	  localStorage['alt']     = alt;
+	  localStorage['shift']   = shift;
+	  localStorage['meta']   	= meta;
+	  localStorage['keyCode']	= keyCode;
+		return true;
+	}
+}
+
+function startEditing() {
+  ctrl = alt = shift = meta = false;
+  keyCode = '';
+  // document.getElementById('shortcut').disabled = "true";
+  document.body.addEventListener('keydown', modifierKeys, true);
+  document.body.addEventListener('keyup', modifierKeys, true);
+  document.body.addEventListener('keypress', mainKey, true);
+	document.getElementById('shortcut').style.color = "#666";
+  updateShortcutField();
+}
+
+function modifierKeys (event) {
+  if (event) {
+    if (event.keyCode == "27") {
+      cancelEditing();
+      return;
+    }
+    ctrl = event.ctrlKey + "";
+    alt = event.altKey + "";
+    shift = event.shiftKey + "";
+    meta = event.metaKey + "";
+  }
+  updateShortcutField();
+}
+
+function mainKey (event) {
+	if (event) {
+		if (ctrl == "true" || alt == "true" || shift == "true" || meta == "true") {
+			keyCode = event.keyCode;
+			saveOptions();
+			updateShortcutField();
+		} else {
+			keyCode = '';
+		}
+	}
+}
+
+function cancelEditing (argument) {
+  // delete document.getElementById('shortcut').disabled;
+  restoreOptions();
+}
+
+// Update textfield with saved or current shortcut
+function updateShortcutField () {
+	var shortcut = "";
+	if (ctrl == "true")		shortcut += "Ctrl+";
+	if (alt == "true")		shortcut += "Alt+";
+	if (shift == "true")	shortcut += "Shift+";
+	if (meta == "true")		shortcut += "Meta+";
+	shortcut += String.fromCharCode(keyCode);
+	if (!(ctrl || alt || shift || meta)) {
+	  shortcut = "Type shortcut";
+	}
+	document.getElementById('shortcut').value = shortcut;
+}
+
+</script>
+</head>
+
+<body onload="restoreOptions();updateShortcutField();">
+<div id="header">
+	<h1>LogMeOut</h1>
+</div>
+<div id="content">
+	<div id="content_bottom"></div>
+	<div id="options">
+		<h2>Options</h2>
+		<label for="shortcut">Keyboard shortcut:</label>
+		<input type="text" id="shortcut" value='' onclick="startEditing();" readonly/>
+		<br/>
+	</div><!-- options -->
+</div><!-- content -->
+<div id="footer">
+	&copy;2010 Timoth&eacute;e Boucher&mdash;<a href="http://timotheeboucher.com">timotheeboucher.com</a>
+</div><!-- footer -->
+<script type="text/javascript">
+</script>
+</body>
+</html>
