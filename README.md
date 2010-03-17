@@ -11,5 +11,6 @@ If no such element is found, the user can "show" which one should be activated. 
 The goal is to have a Firefox extension that would just add a keyboard shortcut for this script and/or a GreaseMonkey script that would do the same.
 
 (c) 2010 Timothee Boucher - All rights reserved
+
 [timotheeboucher.com](http://www.timotheeboucher.com)
 
