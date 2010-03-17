@@ -1,0 +1,28 @@
+<html>
+<script>
+
+// For message passing
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {		
+    if (request.command == "restoreOptions") {
+      myCtrl 		= localStorage["ctrl"];
+    	myAlt 		= localStorage["alt"];
+    	myShift   = localStorage["shift"];
+			myKeyIdentifier = localStorage['keyIdentifier'];
+
+    	// defines default shortcut Alt+Shift+1
+    	myCtrl 		= (typeof myCtrl == "undefined"   ? "false":myCtrl);
+    	myAlt			= (typeof myAlt == "undefined"    ? "true":myAlt);
+    	myShift 	= (typeof myShift == "undefined"  ? "true":myShift);
+			myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+0021":myKeyIdentifier);
+    	
+      sendResponse({ctrl: myCtrl,
+                    alt: myAlt,
+                    shift: myShift,
+										keyIdentifier: myKeyIdentifier});
+    } else {
+      sendResponse({});
+    }
+  });
+</script>
+</html>
