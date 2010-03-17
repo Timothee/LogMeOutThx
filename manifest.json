@@ -1,13 +1,14 @@
 {
   "name": "LogMeOutThx",
-  "version": "0.3.2",
-  "description": "Adds keyboard shortcut to use LogMeOutThx http://logmeoutthx.com Pressing Alt+Shift+1 will log you out (or try to). See options to change the shortcut.",
+  "version": "0.3.3",
+  "description": "Adds keyboard shortcut to use LogMeOutThx http://logmeoutthx.com Pressing Alt+Shift+1 will log you out (or try to). See options to change the shortcut. (NB: it currently uses a remote script rather than local one just so that I don't have to maintain the same script in multiple places)",
   "background_page": "background.html",
   "options_page": "options.html",
   "content_scripts": [
     {
-      "matches": ["http://*/*"],
-      "js": ["content_script.js"]
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content_script.js"],
+      "all_frames": true
     }
   ],
   "update_url": "http://logmeoutthx.com/chrome/updates.xml"

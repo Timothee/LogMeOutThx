@@ -16,7 +16,8 @@ function restoreOptions(response) {
 };
 
 // Listens to keypress and adds script if it matches setting
-document.body.addEventListener('keypress', launchLogMeOut, true);
+window.addEventListener('keydown', launchLogMeOut, false);
+
 function launchLogMeOut (event) {
   if (event.ctrlKey+"" == ctrl &&
       event.altKey+"" == alt &&
