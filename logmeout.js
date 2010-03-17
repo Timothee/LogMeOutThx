@@ -4,8 +4,6 @@
  * www.timotheeboucher.com
  */
 
-// Bookmarklet:
-// javascript:var%20logMeOut;if(logMeOut!=undefined){logMeOut.start();}else{var%20script=document.createElement('script');script.src='http://logmeoutthx.com/logmeout.js';document.getElementsByTagName('head')[0].appendChild(script);}
 (function(){
   var bgColor; // to store background color of hovered element in showMe()
   var textColor; // to store the text color of hovered element in showMe()
@@ -22,11 +20,11 @@
   function start() {
     // this site needs a particular element to be activated
     if (localStorage && localStorage["logmeoutthx"]) {
-      // findElement(localStorage["logmeoutthx"]); // function to define obviously
-      alert('localStorage! Yay!');
       
-      
-      
+      var candidates = findElementsFromInfo(localStorage["logmeoutthx"]);
+      for (var i = 0; i < candidates.length; i++) {
+        activateElement(candidates[i]);
+      }      
     } else {
       // general case, based on common strings
       // we look for matching elements
@@ -62,23 +60,6 @@
     return false;
   }
   
-  // function isTextAMatch (text) {
-  //   var regexp;
-  //   for (var i = 0; i < stringsToMatch.length; i++) {
-  //     regexp = new RegExp("\\b"+stringsToMatch[i]+"\\b", "i");
-  //     if (regexp.test(text)) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
-  
-//
-// Given an element, go through all its children elements recursively to find
-// one element whose text data matches some strings.
-// Once one element is found the "activateElement" function is called on it
-// to try to simulate a click on it.
-//
   function traverseElement (element, func) {
     processElement(element, func);
     var child = element.firstChild;
@@ -90,7 +71,7 @@
   }
 
   function processElement (element, func) {
-    if (/iframe/i.test(element.tagName)) {
+    if (/^iframe$/i.test(element.tagName)) {
       if (element.contentDocument) {
         traverseElement(element.contentDocument.body, func);
       }
@@ -101,7 +82,7 @@
   }
   
   function findAction (element) {
-    if (/body/i.test(element.tagName)) {
+    if (/^body$/i.test(element.tagName)) {
       return;
     } else {
       if (!activateElement(element)) {
@@ -125,11 +106,13 @@
   function nothingFound() {
     var elt = document.createElement('div');
     elt.id = "logMeOutMessage";
-    elt.innerHTML = '<strong>LogMeOut</strong><br/>Embarrassing but I did not find anything...';
-    // elt.innerHTML = '<strong>LogMeOut</strong><br/>That\'s embarrassing but I didn\'t find anything... Maybe you could show me and I\'ll remember for next time.<br/>Just put your mouse cursor over the element you would click to log out and press Alt+Shift+S on your keyboard.<div onclick="logMeOut.showMe()" style="text-decoration: underline;cursor:pointer">Ok, I\'ll show you!</div> <div onclick="logMeOut.nevermind();" style="text-decoration: underline;cursor:pointer">Nevermind...</div>';
+    // elt.innerHTML = '<strong>LogMeOut</strong><br/>Embarrassing but I did not find anything...';
+    elt.innerHTML = "<strong>LogMeOut</strong><br/>Embarrassing but I did not find anything... Maybe you could show me and I\'ll remember for next time.<br/>Just put your mouse cursor over the element you would click to log out and press Alt+Shift+S on your keyboard.<div id='logMeOutThx.showMe' style='text-decoration: underline;cursor:pointer'>Ok, I\'ll show you!</div> <div id='logMeOutThx.nevermind' style='text-decoration: underline;cursor:pointer'>Nevermind...</div>";
     elt.setAttribute('style', "position: fixed; top: 10px; left: 10px; max-width: 350px; background-color: #eeeeee; color: #3b2221; border: 3px solid #666666; padding: 10px;z-index:99999;");
     document.body.appendChild(elt);
-    setTimeout(function(){elt.style.display = "none";}, 3000);
+    document.getElementById('logMeOutThx.showMe').onclick = showMe;
+    document.getElementById('logMeOutThx.nevermind').onclick = nevermind;
+    // setTimeout(function(){elt.style.display = "none";}, 3000);
   }
   
   function letMeDecide() {
@@ -141,45 +124,73 @@
   
   function showMe() {
     document.getElementById('logMeOutMessage').innerHTML = '<strong>LogMeOut</strong><br/>';
-    document.body.addEventListener('mouseover',
-      function(event) {
-        mouseTarget = event.target;
-        bgColor = event.target.style.backgroundColor;
-        event.target.style.backgroundColor = "#00f";
-        textColor = event.target.style.color;
-        event.target.style.color = "#FFF";
-      }, true);
-    document.body.addEventListener('mouseout',
-        function(event) {
-          event.target.style.backgroundColor = bgColor;
-          event.target.style.color = textColor;
-        }, true);
+    document.body.addEventListener('mouseover', changeBgColor, true);
+    document.body.addEventListener('mouseout', changeTextColor, true);
     document.body.addEventListener('keypress', saveTarget, true);
   }
   
+  function changeBgColor (event) {
+    mouseTarget = event.target;
+    bgColor = event.target.style.backgroundColor;
+    event.target.style.backgroundColor = '#00f';
+    textColor = event.target.style.color;
+    event.target.style.color = '#FFF';
+  }
+
+  function changeTextColor (event) {
+    event.target.style.backgroundColor = bgColor;
+    event.target.style.color = textColor;
+  }
+
   function nevermind() {
     var box  = document.getElementById('logMeOutMessage');
     box.parentNode.removeChild(box);
   }
   
   function saveTarget(event) {
-    // var that = this;
     if (event.altKey === true && event.shiftKey === true && event.keyCode == 205) {
-      console.log(logMeOut.mouseTarget);
-      // logMeOut.findAction(logMeOut.mouseTarget);
-      // do some JSONP magic to send information to server.
-      // the server logs that and sends back something like
-      // findActionFromDescription({id: #id, tagName: #tagName, etc...}) with a Timeout
-      // and shows a message like it was saved...
+      if (mouseTarget.id != undefined && mouseTarget.id != "") {
+        localStorage.setItem("logmeoutthx", '{"id": "'+mouseTarget.id+'"}');
+      } else if (/^img$/i.test(mouseTarget.tagName) && mouseTarget.src != undefined && mouseTarget.src != "") {
+        localStorage.setItem("logmeoutthx", "{'tagName':'"+mouseTarget.tagName+"', 'src': '"+mouseTarget.src+"'}");
+      } else if (/^a$/i.test(mouseTarget.tagName) && mouseTarget.href != undefined && mouseTarget.href != "" && mouseTarget.href != "#") {
+        localStorage.setItem("logmeoutthx", "{'tagName': 'a', 'href':'"+mouseTarget.href+"'}");
+      } else if (false) { // find id for children
+      
+      } else {
+        // this element will be too hard to detect, do you want to try again?
+      }
+      mouseTarget.style.backgroundColor = bgColor;
+      mouseTarget.style.color = textColor;
+      document.body.removeEventListener('mouseover', changeBgColor, true);
+      document.body.removeEventListener('mouseout', changeTextColor, true);
+      document.body.removeEventListener('keypress', saveTarget, true);
+      
+      var message = document.getElementById('logMeOutMessage');
+      message.parentNode.removeChild(message);
     }
-    console.log(event);
   }
   
-  function manageFailure() {
+  function findElementsFromInfo (localStorageString) {
+    var elt = eval("("+localStorageString+")");
+    if (elt.id != undefined) {
+      return [document.getElementById(elt.id)];
+    } else if (/^img$/i.test(elt.tagName) && elt.src != undefined) {
+      var imgs = document.getElementsByTagName(elt.tagName);
+      var ret = [];
+      for (var i = 0; i < imgs.length; i++) {
+        if (imgs[i][elt.attr] == elt.attr_value) {
+          ret.push(imgs[i]);
+        }
+      }
+    } else if (/^a$/i.test(elt.tagName) && elt.href != undefined) {
+      localStorage.setItem("logmeoutthx", "{'tagName': 'a', 'href':'"+mouseTarget.href+"'}");
+    } else if (false) { // find id for children
     
+    } else {
+    
+    }
   }
 
-
   start();
-  // localStorage.setItem("logmeoutthx", "Hello!"+document.location.host);
 })();
