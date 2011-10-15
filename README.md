@@ -16,7 +16,7 @@ Also, I'd like to add the ability to easily customize the strings to match. (e.g
 
 This is provided under the MIT License.
 
-(c) 2010 Timothee Boucher - All rights reserved
+(c) 2010 Timothee Boucher
 
 [timotheeboucher.com](http://www.timotheeboucher.com)
 
