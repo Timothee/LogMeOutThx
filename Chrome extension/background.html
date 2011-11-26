@@ -1,9 +1,10 @@
 <html>
 <script>
 
-// For message passing
+// This is used for message passing between the background page and content scripts.
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {		
+    // This allows passing the saved keyboard shortcut to the options page and the content script
     if (request.command == "restoreOptions") {
       myCtrl 		= localStorage["ctrl"];
     	myAlt 		= localStorage["alt"];
@@ -22,7 +23,7 @@ chrome.extension.onRequest.addListener(
 										keyIdentifier: myKeyIdentifier});
     } else {
       sendResponse({});
-    }
+    } // if
   });
 </script>
 </html>
