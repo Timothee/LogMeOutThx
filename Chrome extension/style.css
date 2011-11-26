@@ -148,11 +148,15 @@ a:hover {
   cursor: pointer;
   -webkit-border-radius: 20px;
   text-align: center;
-  width: 100px;
+  width: 150px;
   margin-left: 10px;
   padding: 5px;
   border:none;
 }
+
+#options #shortcut.editing {
+  color: #666;
+  box-shadow: inset 0px 0px 5px rgba(255, 255, 0, 1)}
 
 /* for Chrome extension */
 

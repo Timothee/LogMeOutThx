@@ -12,6 +12,7 @@ function restoreOptions(response) {
   ctrl    = response.ctrl;
   alt     = response.alt;
   shift   = response.shift;
+  meta    = response.meta;
   keyIdentifier = response.keyIdentifier;
 };
 
@@ -22,6 +23,7 @@ function launchLogMeOut (event) {
   if (event.ctrlKey+"" == ctrl &&
       event.altKey+"" == alt &&
       event.shiftKey+"" == shift &&
+      event.metaKey+"" == meta &&
       event.keyIdentifier == keyIdentifier) {
     var logMeOut;
     if (logMeOut!=undefined) {
@@ -30,6 +32,6 @@ function launchLogMeOut (event) {
       var script=document.createElement('script');
       script.src='http://logmeoutthx.com/logmeout.js';
       document.getElementsByTagName('head')[0].appendChild(script);
-    }
-  }
-}
+    } // if
+  } // if
+} // launchLogMeOut

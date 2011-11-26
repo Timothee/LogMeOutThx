@@ -3,17 +3,19 @@
 <link rel="stylesheet" href="/style.css" type="text/css"/>
 <script type="text/javascript">
 
-var ctrl, alt, shift, keyIdentifier;
+var ctrl, alt, shift, meta, keyIdentifier;
 
 // Retrieves KB shortcut setting
 chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+
 function restoreOptions(response) {
   ctrl    = response.ctrl;
   alt     = response.alt;
   shift   = response.shift;
+  meta    = response.meta;
   keyIdentifier = response.keyIdentifier;
 	updateShortcutField();
-};
+} // restoreOptions
 
 // Update textfield with saved or current shortcut
 function updateShortcutField () {
@@ -22,28 +24,30 @@ function updateShortcutField () {
 	if (ctrl == "true")		shortcut += (mac?"\u2303":"Ctrl+");
 	if (alt == "true")		shortcut += (mac?"\u2325":"Alt+");
 	if (shift == "true")	shortcut += (mac?"\u21e7":"Shift+");
+	if (meta == "true")	  shortcut += (mac?"\u2318":"Meta+");
+	
+	if (mac) shortcut += " ";
 	shortcut += unicodeFromKeyIdentifier(keyIdentifier);
 	// Shortcut needs at least one modifier key
-	if (!(ctrl || alt || shift) || shortcut == "") {
+	if (!(ctrl || alt || shift || meta) || shortcut == " ") {
 	  shortcut = "Type shortcut";
-	}
+	} // if
 	document.getElementById('shortcut').value = shortcut;
 } // updateShortcutField
 
 // Resets KB (without saving) and starts listening to keystrokes
 function startEditing() {
-  ctrl = alt = shift = false;
+  ctrl = alt = shift = meta = false;
   keyIdentifier = '';
   document.body.addEventListener('keydown', modifierKeys, true);
   document.body.addEventListener('keyup', modifierKeys, true);
   document.body.addEventListener('keypress', mainKey, true);
-	document.getElementById('shortcut').style.color = "#666";
+  document.getElementById('shortcut').className = "editing";
   updateShortcutField();
 } // startEditing
 
 // Used for live updating before a "real" key is pressed
 function modifierKeys (event) {
-  console.log(event);
   if (event) {
     // Cancels if Esc is pressed
     if (event.keyCode == "27") {
@@ -53,6 +57,12 @@ function modifierKeys (event) {
     ctrl = event.ctrlKey + "";
     alt = event.altKey + "";
     shift = event.shiftKey + "";
+    meta = event.metaKey + "";
+    if (meta == "true" && /U\+[0-9A-E]{4}/.test(event.keyIdentifier)) {
+      // When meta is pressed, the keypress event is typically not fired because no character is printed
+      // This works around that by pretending it was fired.
+      mainKey(event);
+    } // if
   } // if
   updateShortcutField();
 } // modifierKeys
@@ -60,7 +70,7 @@ function modifierKeys (event) {
 // Grabs the shortcut and saves it
 function mainKey (event) {
 	if (event) {
-		if (ctrl == "true" || alt == "true" || shift == "true") {
+		if (ctrl == "true" || alt == "true" || shift == "true" || meta == "true") {
 			keyIdentifier = event.keyIdentifier;
 			resetField();
 			saveOptions();
@@ -76,7 +86,7 @@ function resetField () {
   document.body.removeEventListener('keydown', modifierKeys, true);
   document.body.removeEventListener('keyup', modifierKeys, true);
   document.body.removeEventListener('keypress', mainKey, true);
-	document.getElementById('shortcut').style.color = "#000";
+  document.getElementById('shortcut').className = "";
 } // resetField
 
 // Called when Esc is pressed
@@ -93,6 +103,7 @@ function saveOptions() {
 	  localStorage['ctrl']   	= ctrl;
 	  localStorage['alt']     = alt;
 	  localStorage['shift']   = shift;
+	  localStorage['meta']    = meta;
 		localStorage['keyIdentifier'] = keyIdentifier;
 		return true;
 	} // if
@@ -106,7 +117,7 @@ function unicodeFromKeyIdentifier (keyId) {
   // if (res = /U\+([0-9A-E]{4})\b/.exec(keyId)) {
     // return String('\\u'+res[1]);
 	} else {
-		return "";
+		return keyId;
 	} // if
 } // unicodeFromKeyIdentifier
 
@@ -136,7 +147,7 @@ function cancelOnClick (event) {
 	</div><!-- options -->
 </div><!-- content -->
 <div id="footer">
-	&copy;2010 Timoth&eacute;e Boucher&mdash;<a href="http://timotheeboucher.com">timotheeboucher.com</a>
+	&copy;2011 Timoth&eacute;e Boucher&mdash;<a href="http://timotheeboucher.com">timotheeboucher.com</a>
 </div><!-- footer -->
 <script type="text/javascript">
 </script>
