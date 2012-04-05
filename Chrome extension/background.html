@@ -12,12 +12,12 @@ chrome.extension.onRequest.addListener(
     	myMeta    = localStorage["meta"];
 			myKeyIdentifier = localStorage['keyIdentifier'];
 
-    	// defines default shortcut Alt+Shift+1
+    	// defines default shortcut Alt+\
     	myCtrl 		= (typeof myCtrl == "undefined"   ? "false":myCtrl);
     	myAlt			= (typeof myAlt == "undefined"    ? "true":myAlt);
-    	myShift 	= (typeof myShift == "undefined"  ? "true":myShift);
+    	myShift 	= (typeof myShift == "undefined"  ? "false":myShift);
     	myMeta   	= (typeof myMeta == "undefined"   ? "false":myMeta);
-			myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+0021":myKeyIdentifier);
+			myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+005C":myKeyIdentifier);
     	
       sendResponse({ctrl: myCtrl,
                     alt: myAlt,

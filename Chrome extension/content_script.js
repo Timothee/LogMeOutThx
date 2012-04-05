@@ -2,7 +2,7 @@
 // - retrieves keyboard shortcut from options
 // - inserts LogMeOut script whenever KB shortcut is called
 // The logout part is handled by the remote script on logmeoutthx.com
-// (c) 2010 Timothée Boucher timotheeboucher.com
+// (c) 2012 Timothée Boucher timotheeboucher.com
 
 var ctrl, alt, shift, keyIdentifier;
 
@@ -30,8 +30,8 @@ function launchLogMeOut (event) {
       logMeOut.start();
     } else {
       var script=document.createElement('script');
-      script.src='http://logmeoutthx.com/logmeout.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
+      script.src = chrome.extension.getURL('logmeout.js');
+      document.getElementsByTagName('body')[0].appendChild(script);
     } // if
   } // if
 } // launchLogMeOut
