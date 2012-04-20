@@ -25,9 +25,9 @@ function launchLogMeOut(event) {
       event.shiftKey+"" == shift &&
       event.metaKey+"" == meta &&
       event.keyIdentifier == keyIdentifier) {
-      var script = document.createElement('script');
-      script.src = chrome.extension.getURL('logmeout.js');
-      document.body.appendChild(script);
-    } // if
+    var script = document.createElement('script');
+    script.src = chrome.extension.getURL('logmeout.js');
+    document.body.appendChild(script);
+    console.log("LogMeOut: added script.");
   } // if
 } // launchLogMeOut

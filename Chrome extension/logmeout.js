@@ -49,6 +49,7 @@
   
   // Simulate a click on designated element
   function activateElement(element) {
+    console.log("LogMeOut: firing click on element: " + element);
     var myEvent;
     if (document.createEventObject) {
       myEvent = document.createEventObject();
