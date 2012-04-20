@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+<title>LogMeOutThx</title>
+<link rel="stylesheet" href="style.css" type="text/css"/>
+<meta name="google-site-verification" content="744DrpweX683K-4VPvzvatHb_7uAfBA0NEYb9RFZHSo" />
+</head>
+<body>
+<div id="header">
+	<h1>LogMeOut</h1>
+</div>
+<div id="content">
+	<div id="content_bottom"></div>
+	<div id="browsers">
+		<div id="safari">
+			<a href='javascript:(function(){var e;var c;var i;var f=["sign\\s*off","sign\\s*out","log\\s*out","log\\s*off","disconnect","déconnexion","se\\s+déconnecter"];var h=[];var o=[];function d(){if(localStorage&&localStorage.logmeoutthx){alert("localStorage!")}else{m();t(document.body,j);if(o.length===0){q()}else{if(o.length===1){b(o[0])}else{k()}}}}function m(){for(var u=0;u<f.length;u++){h.push(new RegExp("\\b"+f[u]+"\\b","i"))}}function j(x){var v=["alt","data","id","value","title"];for(var w=0;w<h.length;w++){for(var u=0;u<v.length;u++){if(h[w].test(x[v[u]])){return true}}}return false}function g(w){var v;for(var u=0;u<f.length;u++){v=new RegExp("\\b"+f[u]+"\\b","i");if(v.test(w)){return true}}return false}function t(u,v){p(u,v);var w=u.firstChild;while(w){t(w,v);w=w.nextSibling}return}function p(u,v){if(/iframe/i.test(u.tagName)){if(u.contentDocument){t(u.contentDocument.body,v)}return}if(v(u)){o.push(u)}return}function s(u){if(/body/i.test(u.tagName)){return}else{if(!b(u)){s(u.parentNode)}}}function b(v){var u;if(document.createEventObject){u=document.createEventObject();return v.fireEvent("onclick",u)}else{u=document.createEvent("HTMLEvents");u.initEvent("click",true,true);return !v.dispatchEvent(u)}}function q(){var u=document.createElement("div");u.id="logMeOutMessage";u.innerHTML="<strong>LogMeOut</strong><br/>Embarrassing but I did not find anything...";u.setAttribute("style","position: fixed; top: 10px; left: 10px; max-width: 350px; background-color: #eeeeee; color: #3b2221; border: 3px solid #666666; padding: 10px;z-index:99999;");document.body.appendChild(u);setTimeout(function(){u.style.display="none"},3000)}function k(){for(var u=0;u<o.length;u++){s(o[u])}}function n(){document.getElementById("logMeOutMessage").innerHTML="<strong>LogMeOut</strong><br/>";document.body.addEventListener("mouseover",function(u){i=u.target;e=u.target.style.backgroundColor;u.target.style.backgroundColor="#00f";c=u.target.style.color;u.target.style.color="#FFF"},true);document.body.addEventListener("mouseout",function(u){u.target.style.backgroundColor=e;u.target.style.color=c},true);document.body.addEventListener("keypress",a,true)}function l(){var u=document.getElementById("logMeOutMessage");u.parentNode.removeChild(u)}function a(u){if(u.altKey===true&&u.shiftKey===true&&u.keyCode==205){console.log(logMeOut.mouseTarget)}console.log(u)}function r(){}d()})();' onmouseover="showArrow();"><img src="images/bookmarklet.png" alt="LogMeOut!"/></a>
+			<p>Drag the above link to your bookmark bar. Click it whenever you want to log out of a site.</p>
+			<div id="arrow">
+				
+			</div>
+		</div><!-- safari -->
+		<div id="chrome">
+			<a href="/chrome/logmeoutthx_v0.3.2.crx"><h2>Click to install the extension</h2></a>
+			<p>Once installed, you can press Alt+Shift+1 to launch the script. The shortcut is configurable in the options page.</p>
+		</div><!-- chrome -->
+		<div id="firefox">
+			<h2>Add-on to come&hellip;</h2>
+			<p>The above bookmarklet should work though. It's just that you can't launch it with a keyboard shortcut.</p>
+		</div><!-- firefox -->
+	</div><!-- browsers -->
+	<div id="faq">
+		<h2>What is LogMeOut?</h2>
+		<p>LogMeOut is a little script that logs you out of the site you're currently visiting. (or dies trying)</p>
+		<h2>How do I use LogMeOut?</h2>
+		<p>Drag the link on the left to your bookmark bar. Whenever you want to log out of the site you're visiting, click the bookmarklet, or even better, press Cmd+1 (if it's the first bookmark in the bar. <a href="http://www.urbandictionary.com/define.php?term=ymmv" target="_BLANK">YMMV</a>)</p>
+		<h2>Ok, but why wouldn't I just click on the "log out" link on the site?</h2>
+		<p>Excellent question! Well, LogMeOut is mostly for people who use keyboard shortcuts and don't like having to grab the mouse to log out of a site. (call them lazy, call them efficient&hellip;) Plus, sometimes the link is inside a menu, meaning two clicks! And sometimes you might not even know where it is&hellip;</p>
+	</div><!-- faq -->
+</div><!-- content -->
+<div id="footer">
+	&copy;2010 Timoth&eacute;e Boucher&mdash;<a href="http://timotheeboucher.com">timotheeboucher.com</a><br/>
+	<p>Use this at your own risk. I built it for myself, but I don't guarantee anything.<br/>
+	Also, if you're worried that the script will do bad things, feel free to download it,<br/>
+	check it and host it wherever you want. Though, really, I'm not planning on doing that.</p>
+	<p>By the way, the current design of this page has been heavily influenced by <a href="http://www.metalabdesign.com/" target="_BLANK">MetaLab</a>.<br/>That should be pretty obvious to anyone who has seen theirs...</p>
+</div><!-- footer -->
+		
+	<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+	try {
+	var pageTracker = _gat._getTracker("UA-11903296-3");
+	pageTracker._trackPageview();
+	} catch(err) {}</script>
+
+<script type="text/javascript">
+
+function showArrow () {
+	
+}
+
+</script>
+</body>
+</html>
