@@ -1,6 +1,6 @@
 {
   "name": "LogMeOutThx",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Adds a keyboard shortcut to log you out. Pressing Alt+\\ (the default) will log you out (or try to). See options to change the shortcut.",
   "background_page": "background.html",
   "options_page": "options.html",
