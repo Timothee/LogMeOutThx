@@ -1,6 +1,3 @@
-<html>
-<script>
-
 // This is used for message passing between the background page and content scripts.
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {		
@@ -24,9 +21,9 @@ chrome.extension.onRequest.addListener(
                     shift: myShift,
                     meta: myMeta,
 										keyIdentifier: myKeyIdentifier});
+		} else if (request.command == "injectScript") {
+		  chrome.tabs.executeScript(null, {file: 'logmeout.js', allFrames: true});
     } else {
       sendResponse({});
     } // if
   });
-</script>
-</html>

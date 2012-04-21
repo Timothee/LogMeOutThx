@@ -8,6 +8,7 @@ var ctrl, alt, shift, meta, keyIdentifier;
 
 // Retrieves KB shortcut setting
 chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
+
 function restoreOptions(response) {
   ctrl    = response.ctrl;
   alt     = response.alt;
@@ -25,9 +26,6 @@ function launchLogMeOut(event) {
       event.shiftKey+"" == shift &&
       event.metaKey+"" == meta &&
       event.keyIdentifier == keyIdentifier) {
-    var script = document.createElement('script');
-    script.src = chrome.extension.getURL('logmeout.js');
-    document.body.appendChild(script);
-    console.log("LogMeOut: added script.");
+    chrome.extension.sendRequest({command: "injectScript"}, function(data) { console.log("LogMeOut: script added.")});
   } // if
 } // launchLogMeOut
