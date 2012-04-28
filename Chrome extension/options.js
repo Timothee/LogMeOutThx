@@ -25,9 +25,9 @@ function updateShortcutField () {
 	shortcut += unicodeFromKeyIdentifier(keyIdentifier);
 	// Shortcut needs at least one modifier key
 	if (!(ctrl || alt || shift || meta) || shortcut == " ") {
-	  shortcut = "Type shortcut";
+	  shortcut = "?";
 	} // if
-	document.getElementById('shortcut').value = shortcut;
+	document.getElementById('shortcut').innerHTML = shortcut;
 } // updateShortcutField
 
 // Resets KB (without saving) and starts listening to keystrokes
@@ -118,7 +118,7 @@ function unicodeFromKeyIdentifier (keyId) {
 
 // Cancel editing if one clicks outside of the input field and its label
 function cancelOnClick (event) {
-	if (event.target.id != "shortcut" && event.target.id != "shortcut_label") {
+	if (event.target.id != "shortcut" && event.target.id != "subtext") {
 		cancelEditing();
 	} // if
 } // cancelOnClick
@@ -129,6 +129,6 @@ function cancelOnClick (event) {
 document.addEventListener('DOMContentLoaded', function() {
   updateShortcutField();
   document.body.addEventListener('click', cancelOnClick);
-  document.getElementById('shortcut_label').addEventListener('click', startEditing);
   document.getElementById('shortcut').addEventListener('click', startEditing);
+  document.getElementById('subtext').addEventListener('click', startEditing);
 })
