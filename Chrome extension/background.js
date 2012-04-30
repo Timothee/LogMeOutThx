@@ -3,26 +3,26 @@ chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {		
     // This allows passing the saved keyboard shortcut to the options page and the content script
     if (request.command == "restoreOptions") {
-      myCtrl 		= localStorage["ctrl"];
-    	myAlt 		= localStorage["alt"];
-    	myShift   = localStorage["shift"];
-    	myMeta    = localStorage["meta"];
-			myKeyIdentifier = localStorage['keyIdentifier'];
+      myCtrlKey       = localStorage["ctrlKey"];
+      myAltKey        = localStorage["altKey"];
+      myShiftKey      = localStorage["shiftKey"];
+      myMetaKey       = localStorage["metaKey"];
+      myKeyIdentifier = localStorage['keyIdentifier'];
 
-    	// defines default shortcut Alt+\
-    	myCtrl 		= (typeof myCtrl == "undefined"   ? "false":myCtrl);
-    	myAlt			= (typeof myAlt == "undefined"    ? "true":myAlt);
-    	myShift 	= (typeof myShift == "undefined"  ? "false":myShift);
-    	myMeta   	= (typeof myMeta == "undefined"   ? "false":myMeta);
-			myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+005C":myKeyIdentifier);
-    	
-      sendResponse({ctrl: myCtrl,
-                    alt: myAlt,
-                    shift: myShift,
-                    meta: myMeta,
-										keyIdentifier: myKeyIdentifier});
-		} else if (request.command == "injectScript") {
-		  chrome.tabs.executeScript(null, {file: 'logmeout.js', allFrames: true});
+      // defines default shortcut Alt+\
+      myCtrlKey       = (typeof myCtrlKey == "undefined"   ? "false":myCtrlKey);
+      myAltKey        = (typeof myAltKey == "undefined"    ? "true":myAltKey);
+      myShiftKey      = (typeof myShiftKey == "undefined"  ? "false":myShiftKey);
+      myMetaKey       = (typeof myMetaKey == "undefined"   ? "false":myMetaKey);
+      myKeyIdentifier = (typeof myKeyIdentifier == "undefined"	? "U+005C":myKeyIdentifier);
+
+      sendResponse({ctrlKey: myCtrlKey,
+                    altKey: myAltKey,
+                    shiftKey: myShiftKey,
+                    metaKey: myMetaKey,
+                    keyIdentifier: myKeyIdentifier});
+    } else if (request.command == "injectScript") {
+      chrome.tabs.executeScript(null, {file: 'logmeout.js', allFrames: true});
     } else {
       sendResponse({});
     } // if

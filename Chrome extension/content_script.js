@@ -4,16 +4,16 @@
 // The logout part is handled by the logmeout.js script
 // (c) 2012 Timothée Boucher timotheeboucher.com
 
-var ctrl, alt, shift, meta, keyIdentifier;
+var ctrlKey, altKey, shiftKey, metaKey, keyIdentifier;
 
 // Retrieves KB shortcut setting
 chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
 
 function restoreOptions(response) {
-  ctrl    = response.ctrl;
-  alt     = response.alt;
-  shift   = response.shift;
-  meta    = response.meta;
+  ctrlKey       = response.ctrlKey;
+  altKey        = response.altKey;
+  shiftKey      = response.shiftKey;
+  metaKey       = response.metaKey;
   keyIdentifier = response.keyIdentifier;
 };
 
@@ -21,10 +21,10 @@ function restoreOptions(response) {
 window.addEventListener('keydown', launchLogMeOut, false);
 
 function launchLogMeOut(event) {
-  if (event.ctrlKey+"" == ctrl &&
-      event.altKey+"" == alt &&
-      event.shiftKey+"" == shift &&
-      event.metaKey+"" == meta &&
+  if (event.ctrlKey+"" == ctrlKey &&
+      event.altKey+"" == altKey &&
+      event.shiftKey+"" == shiftKey &&
+      event.metaKey+"" == metaKey &&
       event.keyIdentifier == keyIdentifier) {
     chrome.extension.sendRequest({command: "injectScript"}, function(data) { console.log("LogMeOut: script added.")});
   } // if

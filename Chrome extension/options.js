@@ -1,30 +1,30 @@
-var ctrl, alt, shift, meta, keyIdentifier;
+var ctrlKey, altKey, shiftKey, metaKey, keyIdentifier;
 
 // Retrieves KB shortcut setting
 chrome.extension.sendRequest({command: "restoreOptions"}, restoreOptions);
 
 function restoreOptions(response) {
-  ctrl    = response.ctrl;
-  alt     = response.alt;
-  shift   = response.shift;
-  meta    = response.meta;
+  ctrlKey       = response.ctrlKey;
+  altKey        = response.altKey;
+  shiftKey      = response.shiftKey;
+  metaKey       = response.metaKey;
   keyIdentifier = response.keyIdentifier;
-	updateShortcutField();
+  updateShortcutField();
 } // restoreOptions
 
 // Update textfield with saved or current shortcut
 function updateShortcutField () {
 	var shortcut = "";
 	var mac = /Macintosh/i.test(navigator.userAgent);
-	if (ctrl == "true")		shortcut += (mac?"\u2303":"Ctrl+");
-	if (alt == "true")		shortcut += (mac?"\u2325":"Alt+");
-	if (shift == "true")	shortcut += (mac?"\u21e7":"Shift+");
-	if (meta == "true")	  shortcut += (mac?"\u2318":"Meta+");
+	if (ctrlKey == "true")  shortcut += (mac?"\u2303":"Ctrl+");
+	if (altKey == "true")   shortcut += (mac?"\u2325":"Alt+");
+	if (shiftKey == "true") shortcut += (mac?"\u21e7":"Shift+");
+	if (metaKey == "true")  shortcut += (mac?"\u2318":"Meta+");
 	
 	if (mac) shortcut += " ";
 	shortcut += unicodeFromKeyIdentifier(keyIdentifier);
 	// Shortcut needs at least one modifier key
-	if (!(ctrl || alt || shift || meta) || shortcut == " ") {
+	if (!(ctrlKey || altKey || shiftKey || metaKey) || shortcut == " ") {
 	  shortcut = "?";
 	} // if
 	document.getElementById('shortcut').innerHTML = shortcut;
@@ -32,7 +32,7 @@ function updateShortcutField () {
 
 // Resets KB (without saving) and starts listening to keystrokes
 function startEditing() {
-  ctrl = alt = shift = meta = false;
+  ctrlKey = altKey = shiftKey = metaKey = false;
   keyIdentifier = '';
   document.body.addEventListener('keydown', modifierKeys, true);
   document.body.addEventListener('keyup', modifierKeys, true);
@@ -49,11 +49,11 @@ function modifierKeys (event) {
       cancelEditing();
       return;
     } // if
-    ctrl = event.ctrlKey + "";
-    alt = event.altKey + "";
-    shift = event.shiftKey + "";
-    meta = event.metaKey + "";
-    if (meta == "true" && /U\+[0-9A-E]{4}/.test(event.keyIdentifier)) {
+    ctrlKey = event.ctrlKey + "";
+    altKey = event.altKey + "";
+    shiftKey = event.shiftKey + "";
+    metaKey = event.metaKey + "";
+    if (metaKey == "true" && /U\+[0-9A-E]{4}/.test(event.keyIdentifier)) {
       // When meta is pressed, the keypress event is typically not fired because no character is printed
       // This works around that by pretending it was fired.
       mainKey(event);
@@ -65,7 +65,7 @@ function modifierKeys (event) {
 // Grabs the shortcut and saves it
 function mainKey (event) {
 	if (event) {
-		if (ctrl == "true" || alt == "true" || shift == "true" || meta == "true") {
+		if (ctrlKey == "true" || altKey == "true" || shiftKey == "true" || metaKey == "true") {
 			keyIdentifier = event.keyIdentifier;
 			resetField();
 			saveOptions();
@@ -95,10 +95,10 @@ function saveOptions() {
 	if (keyIdentifier == '') {
 		return false;
 	} else {
-	  localStorage['ctrl']   	= ctrl;
-	  localStorage['alt']     = alt;
-	  localStorage['shift']   = shift;
-	  localStorage['meta']    = meta;
+	  localStorage['ctrlKey']   	= ctrlKey;
+	  localStorage['altKey']     = altKey;
+	  localStorage['shiftKey']   = shiftKey;
+	  localStorage['metaKey']    = metaKey;
 		localStorage['keyIdentifier'] = keyIdentifier;
 		return true;
 	} // if
