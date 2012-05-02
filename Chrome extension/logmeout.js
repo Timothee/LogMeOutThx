@@ -49,9 +49,9 @@
   
   // Simulate a click on designated element
   function activateElement(element) {
-    console.log("LogMeOut: firing click on element: " + element);
+    console.log("[LogMeOutThx] firing click on element: " + element);
 
-    displayMessage('logMeOutMessage', '<strong>LogMeOut</strong><br/>I just clicked on something. Hopefully that will work :)');
+    displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>I just clicked on something. Hopefully that will work :)');
 
     var myEvent;
     if (document.createEventObject) {
@@ -66,7 +66,7 @@
   
   // Displays a message if log out element can not be found
   function nothingFound() {
-    displayMessage('logMeOutMessage', '<strong>LogMeOut</strong><br/>It\'s embarrassing but I did not find anything this time&hellip;');
+    displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>It\'s embarrassing but I did not find anything this time&hellip;');
   } // nothingFound()
 
   // Common function to display a message in the message box
@@ -88,7 +88,7 @@
   } // displayMessage
 
   // Let's get it started!
-  displayMessage('logMeOutMessage', '<strong>LogMeOut</strong><br/>Ok, let\'s see&hellip;');
+  displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>Ok, let\'s see&hellip;');
   if (!traverseElement(document.body, isElementAMatch, activateElement)) {
     nothingFound();
   } // if
