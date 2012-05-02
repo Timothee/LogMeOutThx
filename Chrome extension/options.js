@@ -54,7 +54,7 @@ function modifierKeys (event) {
     shiftKey = event.shiftKey + "";
     metaKey = event.metaKey + "";
     if (metaKey == "true" && /U\+[0-9A-E]{4}/.test(event.keyIdentifier)) {
-      // When meta is pressed, the keypress event is typically not fired because no character is printed
+      // When metaKey is pressed, the keypress event is typically not fired because no character is printed
       // This works around that by pretending it was fired.
       mainKey(event);
     } // if
@@ -92,16 +92,16 @@ function cancelEditing (argument) {
 
 // Saves options to localStorage.
 function saveOptions() {
-	if (keyIdentifier == '') {
-		return false;
-	} else {
-	  localStorage['ctrlKey']   	= ctrlKey;
-	  localStorage['altKey']     = altKey;
-	  localStorage['shiftKey']   = shiftKey;
-	  localStorage['metaKey']    = metaKey;
-		localStorage['keyIdentifier'] = keyIdentifier;
-		return true;
-	} // if
+  if (keyIdentifier == '') {
+    return false;
+  } else {
+    localStorage['ctrlKey']       = ctrlKey;
+    localStorage['altKey']        = altKey;
+    localStorage['shiftKey']      = shiftKey;
+    localStorage['metaKey']       = metaKey;
+    localStorage['keyIdentifier'] = keyIdentifier;
+    return true;
+  } // if
 } // saveOptions
 
 // Transforms keyIdentifier value into Unicode character
