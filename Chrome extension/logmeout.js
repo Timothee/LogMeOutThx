@@ -51,8 +51,8 @@
   function activateElement(element) {
     console.log("[LogMeOutThx] firing click on element: " + element);
 
-    displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>I just clicked on something. Hopefully that will work :)');
-
+    chrome.extension.sendRequest({command: "elementActivated"});
+  	
     var myEvent;
     if (document.createEventObject) {
       myEvent = document.createEventObject();
@@ -66,29 +66,10 @@
   
   // Displays a message if log out element can not be found
   function nothingFound() {
-    displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>It\'s embarrassing but I did not find anything this time&hellip;');
+    chrome.extension.sendRequest({command: "nothingFound"});
   } // nothingFound()
 
-  // Common function to display a message in the message box
-  function displayMessage(element_id, element_content, root_for_element, timeout) {
-    root_for_element = typeof root_for_element !== 'undefined' ? root_for_element : document.body;
-    timeout = typeof timeout !== 'undefined' ? timeout : 3000;
-    
-    var elt = document.getElementById(element_id);
-    if (elt) {
-      elt.style.display = "block";
-    } else {
-      elt = document.createElement('div');
-      elt.id = element_id;
-      root_for_element.appendChild(elt);
-    }
-    elt.innerHTML = element_content;
-    elt.setAttribute('style', "font-family: Helvetica, Arial, sans-serif; position: fixed; top: 20px; left: 20px; max-width: 350px; background-color: #f0f0f0; color: #333333; border: 1px solid #aaa; padding: 15px;z-index:99999;border-image: initial;font-size: 1.3em;border-radius: 5px;box-shadow: 0px 6px 10px rgba(51,51,51,0.5); text-shadow: 0px 1.5px white;");
-    setTimeout(function(){elt.style.display = "none";}, timeout);
-  } // displayMessage
-
   // Let's get it started!
-  displayMessage('logMeOutMessage', '<strong>LogMeOutThx</strong><br/>Ok, let\'s see&hellip;');
   if (!traverseElement(document.body, isElementAMatch, activateElement)) {
     nothingFound();
   } // if
