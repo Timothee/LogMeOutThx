@@ -1,0 +1,40 @@
+#logMeOutThx_container {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: none;
+  z-index: 99999;
+  text-shadow: 0px 1.5px white;
+  line-height: 1.6em
+}
+
+#logMeOutThx_message {
+  background-color: #f4f4f4;
+  margin: 120px auto;
+  padding: 40px;
+  width: 300px;
+  height: 96px;
+  box-shadow: 10px 30px 80px 30px rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  border: 1px solid #adadad;
+}
+
+#logMeOutThx_message h1 {
+  padding: 0px 0px 25px;
+  margin: 0px;
+  font-size: 22px;
+  font-weight: normal;
+  color: #444;
+}
+
+#logMeOutThx_message p {
+  padding: 0px 50px 0px;
+  margin: 0px;
+  font-size: 18px;
+  color: #999;
+}

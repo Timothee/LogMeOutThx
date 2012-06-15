@@ -35,10 +35,12 @@ chrome.extension.onRequest.addListener(
       console.log(request.keyEvent);
       if (keyEventMatchLocalStorage(request.keyEvent)) {
         // The <div> for messages is created only when the shortcut matches
-        chrome.tabs.executeScript(sender.tab.id, {code: "createMessageDiv('logMeOutThxMessage', document.body);"},
+        console.log(sender);
+        chrome.tabs.insertCSS(sender.tab.id, {file: 'logmeoutthx.css'});
+        chrome.tabs.executeScript(sender.tab.id, {code: "createMessageDiv('logMeOutThx', document.body);"},
           function() {
             // the <div> is only updated once created, which, you know, just make sense
-            chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThxMessage', '<h1>LogMeOutThx</h1><p>LogMeOutThx was started.</p>', 10000);"},
+            chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>LogMeOutThx was started.</p>', 10000);"},
               function() {
                 chrome.tabs.executeScript(sender.tab.id, {file: 'logmeout.js', allFrames: true});
                 console.log('[LogMeOutThx] Added logmeout.js script to page');
@@ -52,14 +54,14 @@ chrome.extension.onRequest.addListener(
       if (activatedPages.indexOf(sender.tab.id) == -1) {
         activatedPages.push(sender.tab.id);
         setTimeout(function() { activatedPages.remove(sender.tab.id); }, 5000);
-        chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThxMessage', '<h1>LogMeOutThx</h1><p>I clicked on something. Hopefully that will work&hellip;</p>', 10000);"});
+        chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>I clicked on something. Hopefully that will work&hellip;</p>', 10000);"});
       }
 
     // Display message when no matching element is found
     } else if (request.command == "nothingFound") {
       console.log("[LogMeOutThx] nothing found: ", sender);
       if (activatedPages.indexOf(sender.tab.id) == -1) {
-        chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThxMessage', '<h1>LogMeOutThx</h1><p>It&#x27;s embarassing but I couldn&#x27;t find anything. :-/', 3000);"});
+        chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>It&#x27;s embarassing but I couldn&#x27;t find anything. :-/', 3000);"});
       }
 
     } else {
