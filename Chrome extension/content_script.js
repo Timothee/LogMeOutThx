@@ -26,7 +26,7 @@ function createMessageDiv(element_id, root_for_element) {
     elt = document.createElement('div');
     elt.id = element_id + "_container";
     elt.innerHTML = "<div id='" + element_id + "_message'></div>";
-    elt.style.display = "none";
+    elt.className = "hidden";
     root_for_element.appendChild(elt);
   }
 } // createMessageDiv
@@ -39,7 +39,7 @@ function updateMessage(element_id, element_content, timeout) {
   if (container) {
     var message = document.getElementById(element_id + "_message");
     message.innerHTML = element_content;
-    container.style.display = "block";
-    setTimeout(function () { container.style.display = "none"; }, timeout);
+    container.className = "displayed";
+    setTimeout(function () { container.className = "hidden"; }, timeout);
   }
 } // updateMessage
