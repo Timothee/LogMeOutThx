@@ -64,7 +64,7 @@
   function nothingFound() {
     var elt = document.getElementById('logMeOutMessage');
     if (elt) {
-      elt.className = "displayed";
+      elt.className = "LMOT_displayed";
     } else {
       elt = document.createElement('div');
       elt.id = "logMeOutMessage";
@@ -72,7 +72,7 @@
       elt.setAttribute('style', "font-family: Helvetica, Arial, sans-serif; position: fixed; top: 20px; left: 20px; max-width: 350px; background-color: #f0f0f0; color: #333333; border: 1px solid #aaa; padding: 15px;z-index:99999;border-image: initial;font-size: 1.3em;border-radius: 5px;box-shadow: 0px 6px 10px rgba(51,51,51,0.5); text-shadow: 0px 1.5px white;");
       document.body.appendChild(elt);
     }
-    setTimeout(function(){elt.className = "hidden";}, 3000);
+    setTimeout(function(){elt.className = "LMOT_hidden";}, 3000);
   } // nothingFound()
 
 

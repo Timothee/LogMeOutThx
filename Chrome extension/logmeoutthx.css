@@ -13,12 +13,12 @@
   line-height: 1.6em;
 }
 
-#logMeOutThx_container.hidden {
+#logMeOutThx_container.LMOT_hidden {
   opacity: 0;
   -webkit-transition: opacity .25s ease-in-out;
 }
 
-#logMeOutThx_container.displayed {
+#logMeOutThx_container.LMOT_displayed {
   opacity: 1;
   -webkit-transition: opacity .15s ease-in-out;
 }

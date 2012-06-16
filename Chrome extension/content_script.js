@@ -26,7 +26,7 @@ function createMessageDiv(element_id, root_for_element) {
     elt = document.createElement('div');
     elt.id = element_id + "_container";
     elt.innerHTML = "<div id='" + element_id + "_message'></div>";
-    elt.className = "hidden";
+    elt.className = "LMOT_hidden";
     root_for_element.appendChild(elt);
   }
 } // createMessageDiv
@@ -39,7 +39,7 @@ function updateMessage(element_id, element_content, timeout) {
   if (container) {
     var message = document.getElementById(element_id + "_message");
     message.innerHTML = element_content;
-    container.className = "displayed";
-    setTimeout(function () { container.className = "hidden"; }, timeout);
+    container.className = "LMOT_displayed";
+    setTimeout(function () { container.className = "LMOT_hidden"; }, timeout);
   }
 } // updateMessage
