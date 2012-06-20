@@ -1,4 +1,16 @@
 // This script is used for message passing between the background page and content scripts.
+
+// Check if we're just after installation
+// in which case, we're setting the default shortcut in localStorage to Alt+\
+if (!localStorage.getItem("installed_time")) {
+  localStorage['ctrlKey']        = "false";
+  localStorage['altKey']         = "true";
+  localStorage['shiftKey']       = "false";
+  localStorage['metaKey']        = "false";
+  localStorage['keyIdentifier']  = "U+005C";
+  localStorage['installed_time'] = new Date().getTime();
+}
+
 var keyAttributesToMatch = ["ctrlKey", "altKey", "shiftKey", "metaKey", "keyIdentifier"];
 var activatedPages = [];
 
