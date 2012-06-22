@@ -46,18 +46,7 @@ chrome.extension.onRequest.addListener(
       console.log('[LogMeOutThx] keyEvent received');
       console.log(request.keyEvent);
       if (keyEventMatchLocalStorage(request.keyEvent)) {
-        // The <div> for messages is created only when the shortcut matches
-        console.log(sender);
-        chrome.tabs.insertCSS(sender.tab.id, {file: 'logmeoutthx.css'});
-        chrome.tabs.executeScript(sender.tab.id, {code: "createMessageDiv('logMeOutThx', document.body);"},
-          function() {
-            // the <div> is only updated once created, which, you know, just make sense
-            chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>LogMeOutThx was started.</p>', 10000);"},
-              function() {
-                chrome.tabs.executeScript(sender.tab.id, {file: 'logmeout.js', allFrames: true});
-                console.log('[LogMeOutThx] Added logmeout.js script to page');
-              });
-          });
+        executeLogOutScriptInTab(sender.tab);
       }
 
     // Display message when one element is activated
@@ -81,6 +70,20 @@ chrome.extension.onRequest.addListener(
     } // if
   });
 
+
+function executeLogOutScriptInTab(tab) {
+  // The <div> for messages is created only when the shortcut matches
+  chrome.tabs.insertCSS(tab.id, {file: 'logmeoutthx.css'});
+  chrome.tabs.executeScript(tab.id, {code: "createMessageDiv('logMeOutThx', document.body);"},
+    function() {
+      // the <div> is only updated once created, which, you know, just make sense
+      chrome.tabs.executeScript(tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>LogMeOutThx was started.</p>', 10000);"},
+        function() {
+          chrome.tabs.executeScript(tab.id, {file: 'logmeout.js', allFrames: true});
+          console.log('[LogMeOutThx] Added logmeout.js script to page');
+        });
+    });
+} // executeLogOutScriptInTab
 
 
 // Matches keyEvent with was is saved in localStorage
