@@ -11,6 +11,17 @@ if (!localStorage.getItem("installed_time")) {
   localStorage['installed_time'] = new Date().getTime();
 }
 
+chrome.tabs.onActivated.addListener(function(activeInfo) { chrome.pageAction.show(activeInfo['tabId']); });
+chrome.tabs.onCreated.addListener(function(tab) { chrome.pageAction.show(tab.id); });
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { chrome.pageAction.show(tabId);});
+
+// Managing the page action
+// at first assuming there is no way to set if you want it or not
+chrome.pageAction.onClicked.addListener(function(tab) {
+  executeLogOutScriptInTab(tab);
+});
+
+
 var keyAttributesToMatch = ["ctrlKey", "altKey", "shiftKey", "metaKey", "keyIdentifier"];
 var activatedPages = [];
 

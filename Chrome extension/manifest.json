@@ -20,6 +20,10 @@
       "all_frames": true
     }
   ],
+  "page_action": {
+    "default_icon": "images/logmeoutthx_16.png",
+    "default_title": "LogMeOutThx"
+  },
   "permissions": [
     "tabs", "https://*/*", "http://*/*"
   ],
