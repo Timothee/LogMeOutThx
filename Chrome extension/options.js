@@ -10,6 +10,7 @@ function restoreOptions(response) {
   metaKey       = response.metaKey;
   keyIdentifier = response.keyIdentifier;
   updateShortcutField();
+  document.getElementById('pageAction_checkbox').className = response.showPageAction;
 } // restoreOptions
 
 // Update textfield with saved or current shortcut
@@ -123,7 +124,11 @@ function cancelOnClick (event) {
 	} // if
 } // cancelOnClick
 
-
+function toggleCheckbox () {
+  var elt = document.getElementById('pageAction_checkbox');
+  localStorage["showPageAction"] = elt.className = (elt.className == "checked" ? "unchecked" : "checked");
+  chrome.extension.sendRequest({command: "togglePageAction"}, function(){});
+} // toggleCheckbox
 
 // Setting up event handlers
 document.addEventListener('DOMContentLoaded', function() {
@@ -131,4 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.addEventListener('click', cancelOnClick);
   document.getElementById('shortcut').addEventListener('click', startEditing);
   document.getElementById('subtext').addEventListener('click', startEditing);
-})
+  document.getElementById('pageAction_checkbox').className = (localStorage['showPageAction'] == 'checked' ? 'checked' : 'unchecked');
+  document.getElementById('pageAction_checkbox').addEventListener('click', toggleCheckbox);
+});

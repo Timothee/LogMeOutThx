@@ -32,9 +32,31 @@ body {
 
 #subtext {
   cursor: pointer;
-  font-size: 12pt;
+  font-size: 14pt;
   text-align: center;
 }
+
+#pageAction_checkbox {
+  margin: 25px auto;
+  text-align: center;
+  font-size: 14pt;
+  cursor: pointer;
+}
+
+#pageAction_checkbox:before {
+  content: "\2713";
+  margin-right: 6px;
+  font-size: 20pt;
+  position: relative;
+  top: 2px;
+}
+
+#pageAction_checkbox.unchecked:before{
+  color: #ccc;
+  text-shadow: #fff 0px 1.5px 1px, #666 0px -2px 1px;
+  top: 4px;
+}
+
 
 #footer {
   text-align: center;

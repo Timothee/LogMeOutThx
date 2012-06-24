@@ -8,12 +8,44 @@ if (!localStorage.getItem("installed_time")) {
   localStorage['shiftKey']       = "false";
   localStorage['metaKey']        = "false";
   localStorage['keyIdentifier']  = "U+005C";
+  localStorage['showPageAction'] = "checked";
   localStorage['installed_time'] = new Date().getTime();
 }
 
-chrome.tabs.onActivated.addListener(function(activeInfo) { chrome.pageAction.show(activeInfo['tabId']); });
-chrome.tabs.onCreated.addListener(function(tab) { chrome.pageAction.show(tab.id); });
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { chrome.pageAction.show(tabId);});
+
+function togglePageAction(tabId) {
+  if (tabId != undefined) {
+    chrome.tabs.get(tabId, function(tab) {
+      if (!/chrome-extension:\/\//.test(tab.url)) {
+        if (localStorage['showPageAction'] == "unchecked") {
+          chrome.pageAction.hide(tabId);
+        } else {
+          chrome.pageAction.show(tabId);
+        } // if
+      } // if
+    });
+
+  // if tabId is undefined, we update all the tabs
+  } else {
+    chrome.tabs.query({}, function(tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        if (!/chrome-extension:\/\//.test(tabs[i].url)) {
+          if (localStorage['showPageAction'] == "unchecked") {
+            chrome.pageAction.hide(tabs[i].id);
+          } else {
+            chrome.pageAction.show(tabs[i].id);
+            } // if
+        } // if
+      } // for
+    });
+  } // if
+} // togglePageAction
+
+chrome.tabs.onActivated.addListener(function(activeInfo) { togglePageAction(activeInfo['tabId']); });
+chrome.tabs.onCreated.addListener(function(tab) { togglePageAction(tab.id); });
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) { togglePageAction(tabId);});
+
+togglePageAction();
 
 // Managing the page action
 // at first assuming there is no way to set if you want it or not
@@ -50,7 +82,8 @@ chrome.extension.onRequest.addListener(
                     altKey: myAltKey,
                     shiftKey: myShiftKey,
                     metaKey: myMetaKey,
-                    keyIdentifier: myKeyIdentifier});
+                    keyIdentifier: myKeyIdentifier,
+                    showPageAction: localStorage['showPageAction']});
     
     // Handles keyEvent sent by the content script
     } else if (request.command == "keyEvent") {
@@ -76,6 +109,8 @@ chrome.extension.onRequest.addListener(
         chrome.tabs.executeScript(sender.tab.id, {code: "updateMessage('logMeOutThx', '<h1>LogMeOutThx</h1><p>It&#x27;s embarassing but I couldn&#x27;t find anything. :-/', 3000);"});
       }
 
+    } else if (request.command == "togglePageAction") {
+      togglePageAction();
     } else {
       sendResponse({});
     } // if
