@@ -14,32 +14,24 @@ if (!localStorage.getItem("installed_time")) {
 
 
 function togglePageAction(tabId) {
-  if (tabId != undefined) {
-    chrome.tabs.get(tabId, function(tab) {
-      if (!/chrome-extension:\/\//.test(tab.url)) {
-        if (localStorage['showPageAction'] == "unchecked") {
-          chrome.pageAction.hide(tabId);
-        } else {
-          chrome.pageAction.show(tabId);
-        } // if
-      } // if
-    });
-
-  // if tabId is undefined, we update all the tabs
+  if (tabId == undefined) {
+    chrome.tabs.query({}, togglePageActionForTabs);
   } else {
-    chrome.tabs.query({}, function(tabs) {
-      for (var i = 0; i < tabs.length; i++) {
-        if (!/chrome-extension:\/\//.test(tabs[i].url)) {
-          if (localStorage['showPageAction'] == "unchecked") {
-            chrome.pageAction.hide(tabs[i].id);
-          } else {
-            chrome.pageAction.show(tabs[i].id);
-            } // if
-        } // if
-      } // for
-    });
+    chrome.tabs.get(tabId, function(tab) { togglePageActionForTabs([tab]) });
   } // if
 } // togglePageAction
+
+function togglePageActionForTabs(tabs) {
+  for (var i = 0; i < tabs.length; i++) {
+    if (!/chrome-extension:\/\//.test(tabs[i].url)) {
+      if (localStorage['showPageAction'] == "unchecked") {
+        chrome.pageAction.hide(tabs[i].id);
+      } else {
+        chrome.pageAction.show(tabs[i].id);
+      } // if
+    } // if
+  } // for
+} // togglePageActionForTabs
 
 chrome.tabs.onActivated.addListener(function(activeInfo) { togglePageAction(activeInfo['tabId']); });
 chrome.tabs.onCreated.addListener(function(tab) { togglePageAction(tab.id); });
