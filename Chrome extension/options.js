@@ -69,7 +69,7 @@ function mainKey (event) {
 		if (ctrlKey == "true" || altKey == "true" || shiftKey == "true" || metaKey == "true") {
 			keyIdentifier = event.keyIdentifier;
 			resetField();
-			saveOptions();
+			saveShortcut();
 			updateShortcutField();
 		} else {
 			keyIdentifier = '';
@@ -92,7 +92,7 @@ function cancelEditing (argument) {
 } // cancelEditing
 
 // Saves options to localStorage.
-function saveOptions() {
+function saveShortcut() {
   if (keyIdentifier == '') {
     return false;
   } else {
@@ -103,10 +103,10 @@ function saveOptions() {
     localStorage['keyIdentifier'] = keyIdentifier;
     return true;
   } // if
-} // saveOptions
+} // saveShortcut
 
 // Transforms keyIdentifier value into Unicode character
-function unicodeFromKeyIdentifier (keyId) {
+function unicodeFromKeyIdentifier(keyId) {
   if (res = /[0-9A-E]{2}\b/.exec(keyId)) {
    return unescape("%"+res[0]);
    // TODO try to use \uXXXX instead of unescape, so that any language should work
@@ -118,13 +118,13 @@ function unicodeFromKeyIdentifier (keyId) {
 } // unicodeFromKeyIdentifier
 
 // Cancel editing if one clicks outside of the input field and its label
-function cancelOnClick (event) {
+function cancelOnClick(event) {
 	if (event.target.id != "shortcut" && event.target.id != "subtext") {
 		cancelEditing();
 	} // if
 } // cancelOnClick
 
-function toggleCheckbox () {
+function toggleCheckbox() {
   var elt = document.getElementById('pageAction_checkbox');
   localStorage["showPageAction"] = elt.className = (elt.className == "checked" ? "unchecked" : "checked");
   chrome.extension.sendRequest({command: "togglePageAction"}, function(){});
