@@ -3,7 +3,7 @@
 // - display message when requested by other scripts
 // (c) 2012 Timothée Boucher timotheeboucher.com
 
-// Listens to keypress and forwards events to background.js
+// Listens to keydown and forwards events to background.js
 window.addEventListener('keydown', sendKeyEvent, false);
 
 var keyAttributesToMatch = ["ctrlKey", "altKey", "shiftKey", "metaKey", "keyIdentifier"];

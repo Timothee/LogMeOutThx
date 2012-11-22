@@ -37,7 +37,6 @@ function startEditing() {
   keyIdentifier = '';
   document.body.addEventListener('keydown', modifierKeys, true);
   document.body.addEventListener('keyup', modifierKeys, true);
-  document.body.addEventListener('keypress', mainKey, true);
   document.getElementById('shortcut').className = "editing";
   updateShortcutField();
 } // startEditing
@@ -45,43 +44,36 @@ function startEditing() {
 // Used for live updating before a "real" key is pressed
 function modifierKeys (event) {
   if (event) {
-    // Cancels if Esc is pressed
-    if (event.keyCode == "27") {
-      cancelEditing();
-      return;
-    } // if
-    ctrlKey = event.ctrlKey + "";
-    altKey = event.altKey + "";
-    shiftKey = event.shiftKey + "";
-    metaKey = event.metaKey + "";
-    if (metaKey == "true" && /U\+[0-9A-E]{4}/.test(event.keyIdentifier)) {
-      // When metaKey is pressed, the keypress event is typically not fired because no character is printed
-      // This works around that by pretending it was fired.
-      mainKey(event);
-    } // if
+		// Cancels if Esc is pressed
+		if (event.keyCode == "27") {
+			cancelEditing();
+			return;
+		} else if (event.keyIdentifier == "Control" ||
+				event.keyIdentifier == "Shift" ||
+				event.keyIdentifier == "Alt" ||
+				event.keyIdentifier == "Meta") {
+			ctrlKey = event.ctrlKey + "";
+			altKey = event.altKey + "";
+			shiftKey = event.shiftKey + "";
+			metaKey = event.metaKey + "";
+		} else {
+			if (ctrlKey == "true" || altKey == "true" || shiftKey == "true" || metaKey == "true") {
+				keyIdentifier = event.keyIdentifier;
+				resetField();
+				saveShortcut();
+				updateShortcutField();
+			} else {
+				keyIdentifier = '';
+			} // if
+		}
   } // if
   updateShortcutField();
 } // modifierKeys
-
-// Grabs the shortcut and saves it
-function mainKey (event) {
-	if (event) {
-		if (ctrlKey == "true" || altKey == "true" || shiftKey == "true" || metaKey == "true") {
-			keyIdentifier = event.keyIdentifier;
-			resetField();
-			saveShortcut();
-			updateShortcutField();
-		} else {
-			keyIdentifier = '';
-		} // if
-	} // if
-} // mainKey
 
 // Stops listeners
 function resetField () {
   document.body.removeEventListener('keydown', modifierKeys, true);
   document.body.removeEventListener('keyup', modifierKeys, true);
-  document.body.removeEventListener('keypress', mainKey, true);
   document.getElementById('shortcut').className = "";
 } // resetField
 
