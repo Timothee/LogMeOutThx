@@ -2,7 +2,7 @@
   "name": "LogMeOutThx",
   "version": "0.5.5",
   "manifest_version": 2,
-  "description": "Adds a keyboard shortcut to log you out of the current page. Pressing Alt+\\ will log you out (or try to at least). See options to change the shortcut.",
+  "description": "Adds a keyboard shortcut to log you out of the current page. (default shortcut is Alt+\\) See options to change the shortcut.",
   "icons": {
     "16": "images/logmeoutthx_16.png",
     "48": "images/logmeoutthx_48.png",
@@ -26,6 +26,5 @@
   },
   "permissions": [
     "tabs", "https://*/*", "http://*/*"
-  ],
-  "update_url": "https://github.com/Timothee/LogMeOutThx/raw/master/packed_extensions/chrome_updates.xml"
+  ]
 }
