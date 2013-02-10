@@ -1,6 +1,6 @@
 {
   "name": "LogMeOutThx",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "manifest_version": 2,
   "description": "Adds a keyboard shortcut to log you out of the current page. Default shortcut is Alt+\\. See options to change the shortcut.",
   "icons": {

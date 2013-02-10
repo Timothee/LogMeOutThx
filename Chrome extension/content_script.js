@@ -40,6 +40,8 @@ function updateMessage(element_id, element_content, timeout) {
     var message = document.getElementById(element_id + "_message");
     message.innerHTML = element_content;
     container.className = "LMOT_displayed";
+    container.style.display = "block";
     setTimeout(function () { container.className = "LMOT_hidden"; }, timeout);
+    setTimeout(function () { container.style.display = "none"; }, timeout + 500);
   }
 } // updateMessage
